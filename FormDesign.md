@@ -1,4 +1,5 @@
-That's a smart use of Google Forms to streamline the initial intake! Since you are onboarding three distinct types of stores (**Kirana, Wholesaler, Latent**), the form should use **Conditional Logic** to guide them through relevant questions based on their store type.
+# [Dashit](https://www.dashit.web.app) © 2025 | [Store Onboarding Google Form](https://docs.google.com/forms/d/1ZmeUWxNbQKNaOwpUw9NumLOBuo3esd9kTkB8MXqlYKE/edit)
+A smart use of Google Forms to streamline the initial intake! Since you are onboarding three distinct types of stores (**Kirana, Wholesaler, Latent**), the form should use **Conditional Logic** to guide them through relevant questions based on their store type.
 
 Here is a design for your Google Form, titled **"Dashit Merchant Onboarding Form."**
 
@@ -79,3 +80,4 @@ This section is where you will apply **Conditional Logic** based on the answer i
 2.  **Efficiency with Conditional Logic:** By branching the form in Section 3, you only ask the wholesaler about API integration and bulk data, and the Kirana store about manual tracking, which keeps the form short and relevant for each partner.
 3.  **Data for Strategy:** The responses help your team categorize the new partner and assign the right onboarding plan (e.g., a "Wholesaler with API need" gets routed to a tech integration specialist).
 4.  **Actionable Information:** You collect the bank details and commitment to T&Cs in the same process, accelerating the sign-up-to-sell time!
+
