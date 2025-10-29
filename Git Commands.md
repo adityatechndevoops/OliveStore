@@ -4,7 +4,9 @@ To change branches in Git and commit your changes to a different branch, follow 
 
 1. Stash your current changes (if any): 
 If you have uncommitted changes on your current branch that you don't want to commit to that branch, you can temporarily save them using git stash. This will clean your working directory, allowing you to switch branches without losing your modifications. 
+```
 git stash
+```
 
 2. Switch to the desired branch: 
 You can switch to an existing branch using git switch (recommended in newer Git versions) or git checkout. To switch to an existing branch. 
