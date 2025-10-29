@@ -1,0 +1,16 @@
+// server/routes/authRoutes.js
+const express = require('express');
+const {
+    registerUser,
+    authUser,
+    getUserProfile,
+} = require('../controllers/authController');
+const { protect } = require('../middleware/authMiddleware');
+
+const router = express.Router();
+
+router.post('/register', registerUser);
+router.post('/login', authUser);
+router.route('/profile').get(protect, getUserProfile); // Protected route
+
+module.exports = router;
