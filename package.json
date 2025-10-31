@@ -2,8 +2,10 @@
   "name": "olivestore",
   "version": "1.0.0",
   "description": "1. [On boarding Google form](https://forms.gle/zHcJi4GjmYWpFKYb6)\r 2. [On boarding Dashboard Web.App](https://olivestore.onrender.com)\r 3. [Data Lake](mongodb)",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,6 +29,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1"
   }
 }

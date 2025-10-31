@@ -15,7 +15,7 @@ const {
 
 const { 
     protect, 
-    admin,
+    isAdmin,
     isMerchant, 
     isStaffOrAdmin 
 } = require('../middleware/authMiddleware');
@@ -44,6 +44,6 @@ router.route('/:id/comment')
     .post(protect, addOrderComment);               // Add comment to order
 
 router.route('/:id/refund')
-    .put(protect, admin, updateRefundSummary);     // Update refund details
+    .put(protect, isAdmin, updateRefundSummary);     // Update refund details
 
 module.exports = router;

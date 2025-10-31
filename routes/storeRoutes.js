@@ -22,19 +22,14 @@ router.route('/')
 // @desc    Upload a single document (e.g., GST, FSSAI)
 // 'document' is the field name in the form-data
 router.route('/:id/documents')
-    .put(protect, isMerchant, upload.single('document'), uploadStoreDocument) // <-- Add the upload middleware here
-
-router.route('/:id/documents')
-    .put(protect, isAdmin, upload.single('document'), uploadStoreDocument) // <-- Add the upload middleware here
+    .put(protect, isMerchant, upload.single('document'), uploadStoreDocument) // Merchant uploads document
 
 router.route('/:id')
     .get(protect, isAdmin, getStoreById)
     .put(protect, isAdmin, updateStore)
     .delete(protect, isAdmin, deleteStore);
 
-// --- Admin / Staff Routes ---
-router.route('/').get(protect, isStaffOrAdmin, getAllStores);
-router.route('/:id').get(protect, isStaffOrAdmin, getStoreById);
+// --- Admin / Staff Routes --- (Handled above with isAdmin)
 
 
 module.exports = router;
