@@ -17,6 +17,7 @@ Let's create the server directory.
    npm install express mongoose bcryptjs jsonwebtoken dotenv cors multer
    npm install -D nodemon 
 ```
+| Modules | Use Case |
 |-------|-----------|
 | express: | The web server framework. | 
 | mongoose: | To talk to your MongoDB database. | 
