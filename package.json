@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+<<<<<<< HEAD
     "make-admin": "node scripts/makeAdmin.js",
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,12 +27,18 @@
     "aws-sdk": "^2.1692.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.8.0",
+<<<<<<< HEAD
     "cookie-parser": "^1.4.7",
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-async-handler": "^1.2.0",
+<<<<<<< HEAD
     "ejs": "^3.1.10",
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
     "multer": "^2.0.2",

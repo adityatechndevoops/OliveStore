@@ -17,7 +17,11 @@ Let's create the server directory.
    npm install express mongoose bcryptjs jsonwebtoken dotenv cors multer
    npm install -D nodemon 
 ```
+<<<<<<< HEAD
 | Modules | Use Case |
+=======
+| Modules | UseCase |
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
 |-------|-----------|
 | express: | The web server framework. | 
 | mongoose: | To talk to your MongoDB database. | 
@@ -26,7 +30,10 @@ Let's create the server directory.
 | cors: | To allow your React frontend to talk to this backend. | 
 | multer: | To handle file uploads (like GST/FSSAI documents). | 
 | nodemon: | To restart your server automatically when you save changes. | 
+<<<<<<< HEAD
 |-------|-----------|
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
 
 Step 2: Create older Structure for Backend
 ```
@@ -51,4 +58,7 @@ Step 2: Create older Structure for Backend
    ├── server.js         # Main application file
    └── package.json
 ```
+<<<<<<< HEAD
 ![Read the complete Documentation] (./Documentation.md)
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
