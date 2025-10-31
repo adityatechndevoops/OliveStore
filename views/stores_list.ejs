@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Stores - OliveStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/stores.css" />
+  <main class="container stores">
+    <h1>Stores</h1>
+    <form method="get" action="/stores" style="margin-bottom:12px">
+      <label>Search</label>
+      <input type="text" name="q" value="<%= q || '' %>" />
+      <button type="submit">Search</button>
+    </form>
+    <table border="1" cellpadding="6">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Owner</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (stores || []).forEach(function(store){ %>
+          <tr>
+            <td><%= store.storeName %></td>
+            <td><%= store.ownerName || (store.onboardedBy && store.onboardedBy.name) || '-' %></td>
+            <td><%= store.contactNumber %></td>
+            <td><%= store.onboardingStatus %></td>
+            <td>
+              <a href="/stores/<%= store._id %>/edit">Edit</a>
+              <form method="post" action="/stores/<%= store._id %>?_method=DELETE" style="display:inline">
+                <button type="submit" onclick="return confirm('Delete store?')">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      <% if (page > 1) { %>
+        <a href="/stores?q=<%= encodeURIComponent(q || '') %>&page=<%= page - 1 %>&limit=<%= limit %>">Prev</a>
+      <% } %>
+      <span style="margin:0 8px">Page <%= page %></span>
+      <% if (hasMore) { %>
+        <a href="/stores?q=<%= encodeURIComponent(q || '') %>&page=<%= page + 1 %>&limit=<%= limit %>">Next</a>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>
+
+

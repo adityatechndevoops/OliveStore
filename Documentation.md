@@ -6,7 +6,7 @@ This document explains how to configure and run the server locally and how to co
 - Node.js 18+
 - A MongoDB connection string (`MONGO_URI`). Atlas or local MongoDB.
 - A `JWT_SECRET` for signing tokens.
-- For document uploads to S3: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET_NAME`.
+- For document uploads (Cloudinary): `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 
 ### 2) Setup
 1. Copy `.env.example` to `.env` and fill in values.
@@ -27,10 +27,9 @@ PORT=5000
 NODE_ENV=development
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret
-AWS_REGION=ap-south-1
-AWS_S3_BUCKET_NAME=your_bucket
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 Note: If using MongoDB Atlas, ensure your IP is allowed in the Atlas network access panel.
@@ -39,7 +38,19 @@ Note: If using MongoDB Atlas, ensure your IP is allowed in the Atlas network acc
 - JWT auth via `Authorization: Bearer <token>` header.
 - Obtain tokens via `POST /api/auth/login`.
 
-### 4) API Endpoints
+### 4) Admin Panel (Web GUI)
+Accessible at `/admin` for Admin and Merchant (Vendor) roles.
+
+- Tabs:
+  - Admin: Users, Stores, Products
+  - Merchant: Stores, Products
+- Users management (Admin only): `/admin/users`
+- Products management: `/admin/products`
+- Stores management: `/stores`
+
+Note: The GUI uses cookie-based auth; API still uses Bearer tokens.
+
+### 5) API Endpoints
 
 #### Auth (`/api/auth`)
 - POST `/register`
@@ -61,7 +72,7 @@ Note: If using MongoDB Atlas, ensure your IP is allowed in the Atlas network acc
 #### Stores (`/api/stores`)
 Role policy summary:
 - Admin: can list/create/update/delete stores.
-- Merchant: can upload own store documents (S3).
+- Merchant: can upload own store documents (Cloudinary).
 
 - GET `/` (Admin only)
   - Headers: `Authorization: Bearer <admin token>`
@@ -94,7 +105,7 @@ Role policy summary:
 - DELETE `/:id` (Admin only)
   - Headers: `Authorization: Bearer <admin token>`
 
-- PUT `/:id/documents` (Merchant only, upload to S3)
+- PUT `/:id/documents` (Merchant only, upload to Cloudinary)
   - Headers: `Authorization: Bearer <merchant token>`
   - Content-Type: `multipart/form-data`
   - Form fields:
@@ -158,17 +169,17 @@ Role policy summary:
     }
     ```
 
-### 5) Error Handling & Status Codes
+### 6) Error Handling & Status Codes
 - 200/201 for success, 400 for validation, 401 for unauthorized, 403 for forbidden, 404 for not found, 500 for server errors.
 - Standard error object: `{ message: string, error?: string }`.
 
-### 6) Quick Test Checklist
+### 7) Quick Test Checklist
 1. Register a user and manually update role to `admin` or `merchant` in DB if needed.
 2. Login to obtain JWT.
 3. Call protected routes with `Authorization: Bearer <token>`.
 4. For S3 upload, ensure all AWS env vars are set and the bucket exists.
 
-### 7) Project Structure
+### 8) Project Structure
 ```
 config/
 controllers/

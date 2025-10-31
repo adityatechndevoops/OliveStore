@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Users - Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/users.css" />
+  <main class="container users">
+    <h1>Users</h1>
+    <form method="get" action="/admin/users" style="margin-bottom:12px">
+      <label>Search</label>
+      <input type="text" name="q" value="<%= q || '' %>" />
+      <button type="submit">Search</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (users || []).forEach(function(u){ %>
+          <tr>
+            <td><%= u.name %></td>
+            <td><%= u.email %></td>
+            <td><%= u.phoneNumber %></td>
+            <td><%= u.role %></td>
+            <td>
+              <form method="post" action="/admin/users/<%= u._id %>/role?_method=PUT" style="display:inline">
+                <select name="role">
+                  <option value="admin" <%= u.role==='admin'?'selected':'' %>>admin</option>
+                  <option value="staff" <%= u.role==='staff'?'selected':'' %>>staff</option>
+                  <option value="merchant" <%= u.role==='merchant'?'selected':'' %>>merchant</option>
+                  <option value="manager" <%= u.role==='manager'?'selected':'' %>>manager</option>
+                  <option value="agent" <%= u.role==='agent'?'selected':'' %>>agent</option>
+                  <option value="viewer" <%= u.role==='viewer'?'selected':'' %>>viewer</option>
+                </select>
+                <button type="submit">Update</button>
+              </form>
+              <form method="post" action="/admin/users/<%= u._id %>?_method=DELETE" style="display:inline">
+                <button type="submit" onclick="return confirm('Delete user?')">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      <% if (page > 1) { %>
+        <a href="/admin/users?q=<%= encodeURIComponent(q || '') %>&page=<%= page - 1 %>&limit=<%= limit %>">Prev</a>
+      <% } %>
+      <span style="margin:0 8px">Page <%= page %></span>
+      <% if (hasMore) { %>
+        <a href="/admin/users?q=<%= encodeURIComponent(q || '') %>&page=<%= page + 1 %>&limit=<%= limit %>">Next</a>
+      <% } %>
+    </div>
+  </main>
+  <script>
+    // emulate method override via _method query param by creating hidden form
+  </script>
+</body>
+</html>
+
+

@@ -61,29 +61,30 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
     try {
-        const { phoneNumber, password } = req.body;
-        // const { email, password } = req.body;
-    
-        // 1. Check for phone and password
-        if (!phoneNumber || !password) {
-          return res.status(400).json({ message: 'Please provide phone number and password' });
+        const { phoneNumber, email, password } = req.body;
+
+        if ((!phoneNumber && !email) || !password) {
+          return res.status(400).json({ message: 'Please provide email or phone number, and password' });
         }
-    
-        // 2. Find user by phone number
-        const user = await User.findOne({ phoneNumber });
-        // const user = await User.findOne({ email });
+
+        // Find user by phone OR email
+        const query = phoneNumber ? { phoneNumber } : { email };
+        const user = await User.findOne(query);
     
         // 3. If user exists AND password matches
         // We use the comparePassword method we defined in User.js
         if (user && (await user.comparePassword(password))) {
-            res.status(200).json({
+            const payload = {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
-                token: generateToken(user._id),
-            });
+            };
+            const token = generateToken(user._id);
+            // Also set cookie for web GUI usage
+            res.cookie('token', token, { httpOnly: true, sameSite: 'lax' });
+            res.status(200).json({ ...payload, token });
         } else {
             // Use a generic message for security
             res.status(401).json({ message: 'Invalid credentials' });

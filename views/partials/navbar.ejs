@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="/css/common.css" />
+<link rel="stylesheet" href="/css/navbar.css" />
+<header class="app-header">
+	<div class="brand">OliveStore</div>
+	<nav class="tabs">
+		<a href="/" class="<%= (!user ? 'active' : '') %>">Home</a>
+		<% if (user) { %>
+			<a href="/dashboard">Dashboard</a>
+			<a href="/stores">Stores</a>
+			<a href="/admin/products">Products</a>
+			<% if (user.role === 'admin') { %><a href="/admin/users">Users</a><% } %>
+			<% if (user.role === 'admin' || user.role === 'merchant') { %><a href="/admin">Admin Panel</a><% } %>
+		<% } %>
+	</nav>
+	<div class="spacer"></div>
+	<div class="user-meta">
+		<% if (user) { %>
+			<span><%= user.name %> • <%= user.role %></span>
+			<a href="/logout" class="btn-outline">Logout</a>
+		<% } else { %>
+			<a href="/" class="btn-outline">Login</a>
+			<a href="/register" class="btn-outline">Register</a>
+		<% } %>
+	</div>
+</header>
+
