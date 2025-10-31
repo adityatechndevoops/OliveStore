@@ -2,41 +2,47 @@
 const mongoose = require('mongoose');
 
 const orderItemSchema = mongoose.Schema({
-    productName: { type: String, required: true },
+    productId: { type: String },
+    name: { type: String, required: true },
     quantity: { type: Number, required: true, default: 1 },
     unitPrice: { type: Number, required: true },
     imageUrl: { type: String }, // For product image in the UI
     status: {
         type: String,
-        enum: ['Accepted', 'Rejected', 'Refunded', 'Damaged', 'Missing'],
+        enum: ['Accepted', 'Rejected', 'Refunded', 'Damaged', 'Missing' ],
         default: 'Accepted',
     },
 });
 
 const orderSchema = mongoose.Schema(
+    // A human-readable ID you can generate (e.g., 'KRN-1001')
     {
+        orderId: { 
+            type: String,
+            required: true,
+            unique: true
+        },
         store: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Store',
             required: true,
         },
-        orderId: { type: String, required: true, unique: true },
-        customerName: { type: String, required: true }, // Customer who placed order at Kirana
-        customerContact: { type: String, required: true },
-        deliveryAddress: {
-            street: { type: String },
-            city: { type: String },
-            pincode: { type: String },
-            geolocation: {
-                latitude: { type: Number },
-                longitude: { type: Number },
+        customer: { 
+            name: { type: String, required: true },
+            phoneNumber: { type: String, required: true },
+            address: {
+                street: { type: String },
+                city: { type: String },
+                pincode: { type: String },
+                coordinates: [Number] // [lng, lat]
             },
         },
+        items: [orderItemSchema],
         totalAmount: { type: Number, required: true, default: 0 },
         paymentStatus: {
-            type: String,
-            enum: ['Pending', 'Success', 'Failed', 'Refunded'],
-            default: 'Pending',
+            method: { type: String, enum: ['COD', 'Online'] },
+            status: { type: String, enum: ['Pending', 'Success', 'Failed'], default: 'Pending' },
+            transactionId: String,
         },
         orderStatus: {
             type: String,
@@ -51,6 +57,16 @@ const orderSchema = mongoose.Schema(
             ],
             default: 'Created',
         },
+        // enum: [
+        //   'Pending',        // Order placed by customer
+        //   'Accepted',       // Store accepts the order
+        //   'Rejected',       // Store rejects the order
+        //   'Preparing',      // Store is packing
+        //   'Ready for Pickup', // For delivery partner
+        //   'Out for Delivery',
+        //   'Delivered',
+        //   'Cancelled'       // Cancelled by customer or store
+        // ],
         orderProgress: [ // For the timeline in the UI
             {
                 status: { type: String },
@@ -58,7 +74,6 @@ const orderSchema = mongoose.Schema(
                 remark: { type: String },
             },
         ],
-        items: [orderItemSchema],
         comments: [
             {
                 user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

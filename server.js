@@ -11,8 +11,8 @@ const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config(); // Load environment variables
 connectDB(); // Connect to MongoDB
-
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json()); // Body parser for JSON
@@ -25,7 +25,12 @@ app.use('/api/orders', orderRoutes);
 
 // Simple root route
 app.get('/', (req, res) => {
-    res.send('API is running...');
+    res.send('Backend Root API is running...');
+});
+
+// A simple test route
+app.get('/api', (req, res) => {
+  res.send('Backend API is running...');
 });
 
 // Basic error handling middleware (can be expanded)
@@ -34,7 +39,6 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () =>
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)

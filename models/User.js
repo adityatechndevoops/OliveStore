@@ -6,32 +6,45 @@ const userSchema = mongoose.Schema(
     {
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
+        phoneNumber: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         role: {
             type: String,
-            enum: ['admin', 'manager', 'viewer'],
+            enum: ['admin', 'manager', 'agent', 'merchant', 'staff', 'viewer', 'new'],
             default: 'viewer',
         },
-    },
-    {
-        timestamps: true,
-    }
+        // This links a 'merchant' user to their stores
+        stores: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Store',
+        }],
+    }, 
+    { timestamps: true }
 );
 
+// --- Mongoose Middleware ---
+
 // Pre-save hook to hash password
+// Hash password before saving the user
 userSchema.pre('save', async function (next) {
+    // Only hash the password if it has been modified (or is new)
     if (!this.isModified('password')) {
-        next();
+        return next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error)
+    }
 });
 
-// Method to compare passwords
-userSchema.methods.matchPassword = async function (enteredPassword) {
+// --- Mongoose Methods ---
+
+// Method to compare entered password with the hashed password
+userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

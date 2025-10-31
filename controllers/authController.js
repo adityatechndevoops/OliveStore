@@ -3,6 +3,12 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+/**
+ * @desc    Generate JWT
+ * @param   {string} id - The user ID
+ * @returns {string} The signed JWT
+ */
+
 // Helper to generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -14,33 +20,39 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public (should be restricted in production, e.g., only admin can create users)
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, role } = req.body;
-
-    const userExists = await User.findOne({ email });
-
-    if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
-    }
-
-    const user = await User.create({
-        name,
-        email,
-        password,
-        role: role || 'viewer', // Default role if not provided
-    });
-
-    if (user) {
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id),
+    try {
+        const { name, email, phoneNumber, password, role } = req.body;
+    
+        const userExists = await User.findOne({ email });
+    
+        if (userExists) {
+            res.status(400);
+            throw new Error('User already exists');
+        }
+    
+        const user = await User.create({
+            name,
+            email,
+            phoneNumber,
+            password,
+            role: role || 'new', // Default role if not provided
         });
-    } else {
-        res.status(400);
-        throw new Error('Invalid user data');
+    
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(400);
+            throw new Error('Invalid user data');
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
@@ -48,21 +60,37 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    if (user && (await user.matchPassword(password))) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id),
-        });
-    } else {
-        res.status(401);
-        throw new Error('Invalid email or password');
+    try {
+        const { phoneNumber, password } = req.body;
+        // const { email, password } = req.body;
+    
+        // 1. Check for phone and password
+        if (!phoneNumber || !password) {
+          return res.status(400).json({ message: 'Please provide phone number and password' });
+        }
+    
+        // 2. Find user by phone number
+        const user = await User.findOne({ phoneNumber });
+        // const user = await User.findOne({ email });
+    
+        // 3. If user exists AND password matches
+        // We use the comparePassword method we defined in User.js
+        if (user && (await user.comparePassword(password))) {
+            res.status(200).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                token: generateToken(user._id),
+            });
+        } else {
+            // Use a generic message for security
+            res.status(401).json({ message: 'Invalid credentials' });
+            throw new Error('Invalid email or password');
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Database Server error', error: error.message });
     }
 });
 
@@ -77,6 +105,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phoneNumber: user.phoneNumber,
             role: user.role,
         });
     } else {
@@ -85,4 +114,16 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { registerUser, authUser, getUserProfile };
+/**
+ * @desc    Get current user's profile
+ * @route   GET /api/auth/me
+ * @access  Private
+ */
+const getMe = asyncHandler (async (req, res) => {
+  // req.user is attached by the authMiddleware
+  // We already fetched the user in the middleware, so just return it
+  // The password was already deselected in the middleware query
+  res.status(200).json(req.user);
+});
+
+module.exports = { registerUser, authUser, getUserProfile, getMe };
