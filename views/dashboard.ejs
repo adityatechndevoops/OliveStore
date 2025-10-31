@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Dashboard - OliveStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <main class="container dashboard">
+    <h1>Welcome, <%= user && user.name ? user.name : 'User' %></h1>
+    <p class="welcome">Use the navigation to manage stores and orders.</p>
+    <section class="card-grid" style="margin-top:16px">
+      <div class="card"><h3>Total Stores</h3><p><strong><%= stats && stats.totalStores || 0 %></strong></p></div>
+      <div class="card"><h3>Approved Stores</h3><p><strong><%= stats && stats.approvedStores || 0 %></strong></p></div>
+      <div class="card"><h3>Pending Onboarding</h3><p><strong><%= stats && stats.pendingStores || 0 %></strong></p></div>
+      <div class="card"><h3>Products</h3><p><strong><%= stats && stats.totalProducts || 0 %></strong></p></div>
+      <div class="card"><h3>Users</h3><p><strong><%= stats && stats.totalUsers || 0 %></strong></p></div>
+      <div class="card"><h3>Staff</h3><p><strong><%= stats && stats.staffUsers || 0 %></strong></p></div>
+      <div class="card"><h3>Orders</h3><p><strong><%= stats && stats.totalOrders || 0 %></strong></p></div>
+      <div class="card"><h3>Live Orders</h3><p><strong><%= stats && stats.liveOrders || 0 %></strong></p></div>
+    </section>
+  </main>
+</body>
+</html>
+
+

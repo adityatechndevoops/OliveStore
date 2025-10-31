@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/admin.css" />
+  <main class="container admin">
+    <section class="card-grid">
+      <a class="card" href="/stores">
+        <h3>Stores</h3>
+        <p>Create, edit, and delete stores. Upload documents.</p>
+      </a>
+      <a class="card" href="/admin/products">
+        <h3>Products</h3>
+        <p>Manage catalog, pricing, stock and images.</p>
+      </a>
+      <% if (user && user.role === 'admin') { %>
+      <a class="card" href="/admin/users">
+        <h3>Users & Access</h3>
+        <p>Assign roles and remove users.</p>
+      </a>
+      <% } %>
+    </section>
+  </main>
+</body>
+</html>
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/products.css" />
+  <main class="container products">
+    <h1>Products</h1>
+    <form method="get" action="/admin/products" class="filters">
+      <label>Store ID</label>
+      <input type="text" name="storeId" value="<%= storeId || '' %>" />
+      <label>Search</label>
+      <input type="text" name="q" value="<%= q || '' %>" />
+      <button type="submit">Filter</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Store</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (products || []).forEach(function(p){ %>
+          <tr>
+            <td><%= p.name %></td>
+            <td><%= (p.store && p.store.storeName) || '-' %></td>
+            <td>₹<%= p.price %></td>
+            <td><%= p.stock %></td>
+            <td><%= p.active ? 'Yes' : 'No' %></td>
+            <td>
+              <a href="/admin/products/<%= p._id %>/edit">Edit</a>
+              <form method="post" action="/admin/products/<%= p._id %>?_method=DELETE" style="display:inline">
+                <button type="submit" onclick="return confirm('Delete product?')">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      <% if (page > 1) { %>
+        <a href="/admin/products?storeId=<%= encodeURIComponent(storeId || '') %>&q=<%= encodeURIComponent(q || '') %>&page=<%= page - 1 %>&limit=<%= limit %>">Prev</a>
+      <% } %>
+      <span style="margin:0 8px">Page <%= page %></span>
+      <% if (hasMore) { %>
+        <a href="/admin/products?storeId=<%= encodeURIComponent(storeId || '') %>&q=<%= encodeURIComponent(q || '') %>&page=<%= page + 1 %>&limit=<%= limit %>">Next</a>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>
+
+

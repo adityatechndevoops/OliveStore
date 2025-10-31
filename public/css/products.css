@@ -1,0 +1,4 @@
+/* Products pages */
+.products .filters { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+.products .filters input { max-width: 220px; }
+

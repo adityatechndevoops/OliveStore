@@ -9,7 +9,11 @@ const asyncHandler = require('express-async-handler'); // Simple middleware for 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
 
+<<<<<<< HEAD
+    // Try header Bearer token first
+=======
     // Check if the token is sent in the headers
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
@@ -37,6 +41,26 @@ const protect = asyncHandler(async (req, res, next) => {
         }
     }
 
+<<<<<<< HEAD
+    // Fallback: check cookie `token`
+    if (!token && req.cookies && req.cookies.token) {
+        try {
+            token = req.cookies.token;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select('-password');
+            if (!req.user) {
+                return res.status(401).json({ message: 'User not found' });
+            }
+            return next();
+        } catch (error) {
+            console.error(error);
+            res.status(401).json({ message: 'Not authorized, token failed' });
+            throw new Error('Not authorized, token failed');
+        }
+    }
+
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     if (!token) {
         res.status(401).json({ message: 'Not authorized, no token' });
         throw new Error('Not authorized, no token');

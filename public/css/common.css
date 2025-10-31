@@ -1,0 +1,100 @@
+/* Common base styles extracted from styles.css */
+html, body {
+	margin: 0;
+	padding: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	background: #f5f6fa;
+	color: #1f2330;
+}
+
+.app-header {
+	background: #ffffff;
+	border-bottom: 1px solid #e5e7eb;
+	padding: 12px 16px;
+	display: flex;
+	align-items: center;
+}
+
+.brand { font-weight: 800; margin-right: 16px; }
+.tabs a { margin-right: 10px; color: #111827; text-decoration: none; padding: 8px 10px; border-radius: 6px; }
+.tabs a.active, .tabs a:hover { background: #eef2ff; color: #1e40af; }
+.spacer { flex: 1; }
+.user-meta { display: flex; align-items: center; gap: 10px; }
+.btn-outline { border: 1px solid #cbd5e1; padding: 8px 10px; border-radius: 6px; color: #111827; text-decoration: none; }
+
+h1, h2, h3 {
+	margin: 16px 0 8px;
+}
+
+main, .container {
+	padding: 16px;
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+/* Forms */
+form {
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	padding: 16px;
+	max-width: 520px;
+}
+
+label {
+	display: block;
+	margin: 12px 0 4px;
+	font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select {
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+	background: #fff;
+	box-sizing: border-box;
+}
+
+button {
+	margin-top: 16px;
+	padding: 10px 14px;
+	background: #2563eb;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #1e40af;
+}
+
+/* Table */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+th, td {
+	padding: 10px 12px;
+	border-bottom: 1px solid #e5e7eb;
+	text-align: left;
+}
+
+th {
+	background: #f3f4f6;
+}
+
+/* Cards */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.card { display: block; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:16px; text-decoration:none; color:#111827; }
+.card:hover { border-color:#c7d2fe; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }

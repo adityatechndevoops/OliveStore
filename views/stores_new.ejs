@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>New Store - OliveStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/stores.css" />
+  <main class="container stores">
+  <h1>Create Store</h1>
+  <% if (error) { %><p style="color:red"><%= error %></p><% } %>
+  <form method="post" action="/stores">
+    <label>Store Name</label>
+    <input type="text" name="storeName" required />
+    <label>Owner Name</label>
+    <input type="text" name="ownerName" required />
+    <label>Contact Number</label>
+    <input type="text" name="contactNumber" required />
+    <label>Email</label>
+    <input type="email" name="email" />
+    <fieldset>
+      <legend>Address</legend>
+      <label>Street</label>
+      <input type="text" name="address[street]" required />
+      <label>City</label>
+      <input type="text" name="address[city]" required />
+      <label>State</label>
+      <input type="text" name="address[state]" required />
+      <label>Pincode</label>
+      <input type="text" name="address[pincode]" required />
+    </fieldset>
+    <label>GSTIN</label>
+    <input type="text" name="gstin" />
+    <label>FSSAI License</label>
+    <input type="text" name="fssaiLicense" />
+    <button type="submit">Create</button>
+  </form>
+  </main>
+</body>
+</html>
+
+

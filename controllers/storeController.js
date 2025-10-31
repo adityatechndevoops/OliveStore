@@ -2,13 +2,43 @@
 const asyncHandler = require('express-async-handler');
 const Store = require('../models/Store');
 const User = require('../models/User');
+<<<<<<< HEAD
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+=======
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
 
 // @desc    Get all stores
 // @route   GET /api/stores
 // @access  Private/Admin
 const getStores = asyncHandler(async (req, res) => {
+<<<<<<< HEAD
+    const query = {};
+    if (req.query.q) {
+        // search by storeName or contactNumber
+        query.$or = [
+            { storeName: { $regex: req.query.q, $options: 'i' } },
+            { contactNumber: { $regex: req.query.q, $options: 'i' } }
+        ];
+    }
+    const page = parseInt(req.query.page || '1', 10);
+    const limit = parseInt(req.query.limit || '10', 10);
+    const skip = (page - 1) * limit;
+    const [items, total] = await Promise.all([
+        Store.find(query).populate('onboardedBy', 'name email').skip(skip).limit(limit),
+        Store.countDocuments(query)
+    ]);
+    res.json({ items, page, limit, total });
+=======
     const stores = await Store.find({}).populate('onboardedBy', 'name email'); // Populate who onboarded the store
     res.json(stores);
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
 });
 
 // @desc    Get single store by ID
@@ -139,10 +169,32 @@ const uploadStoreDocument = asyncHandler(async (req, res) => {
       return res.status(401).json({ message: 'Not authorized for this store' });
     }
 
+<<<<<<< HEAD
+    // 4. Upload to Cloudinary from buffer
+    let uploadResult;
+    if (req.file && req.file.buffer) {
+      uploadResult = await new Promise((resolve, reject) => {
+        const folder = `stores/${storeId}`;
+        const stream = cloudinary.uploader.upload_stream(
+          { folder, resource_type: 'auto' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+    }
+
+    const newDocument = {
+      docType: docType,
+      url: uploadResult && (uploadResult.secure_url || uploadResult.url),
+=======
     // 4. Create the document object
     const newDocument = {
       docType: docType,
       url: req.file.location, // 'req.file.location' is the S3 URL provided by multer-s3
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     };
 
     // 5. Add the new document to the store's array
@@ -156,7 +208,11 @@ const uploadStoreDocument = asyncHandler(async (req, res) => {
 
     res.status(200).json({ 
       message: 'Document uploaded successfully',
+<<<<<<< HEAD
+      fileUrl: newDocument.url,
+=======
       fileUrl: req.file.location,
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
       store: store
     });
 

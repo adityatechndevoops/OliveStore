@@ -61,6 +61,17 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
     try {
+<<<<<<< HEAD
+        const { phoneNumber, email, password } = req.body;
+
+        if ((!phoneNumber && !email) || !password) {
+          return res.status(400).json({ message: 'Please provide email or phone number, and password' });
+        }
+
+        // Find user by phone OR email
+        const query = phoneNumber ? { phoneNumber } : { email };
+        const user = await User.findOne(query);
+=======
         const { phoneNumber, password } = req.body;
         // const { email, password } = req.body;
     
@@ -72,18 +83,31 @@ const authUser = asyncHandler(async (req, res) => {
         // 2. Find user by phone number
         const user = await User.findOne({ phoneNumber });
         // const user = await User.findOne({ email });
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
     
         // 3. If user exists AND password matches
         // We use the comparePassword method we defined in User.js
         if (user && (await user.comparePassword(password))) {
+<<<<<<< HEAD
+            const payload = {
+=======
             res.status(200).json({
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
+<<<<<<< HEAD
+            };
+            const token = generateToken(user._id);
+            // Also set cookie for web GUI usage
+            res.cookie('token', token, { httpOnly: true, sameSite: 'lax' });
+            res.status(200).json({ ...payload, token });
+=======
                 token: generateToken(user._id),
             });
+>>>>>>> 7c51e59a64d0d19f689ff30dbbdbe47e8a654323
         } else {
             // Use a generic message for security
             res.status(401).json({ message: 'Invalid credentials' });

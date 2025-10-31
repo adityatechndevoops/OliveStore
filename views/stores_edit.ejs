@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Edit Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <link rel="stylesheet" href="/css/stores.css" />
+  <main class="container stores">
+  <h1>Edit Store</h1>
+  <form method="post" action="/stores/<%= store._id %>?_method=PUT">
+    <label>Store Name</label>
+    <input type="text" name="storeName" value="<%= store.storeName %>" />
+    <label>Owner Name</label>
+    <input type="text" name="ownerName" value="<%= store.ownerName || '' %>" />
+    <label>Contact Number</label>
+    <input type="text" name="contactNumber" value="<%= store.contactNumber %>" />
+    <label>Email</label>
+    <input type="email" name="email" value="<%= store.email || '' %>" />
+    <fieldset>
+      <legend>Address</legend>
+      <label>Street</label>
+      <input type="text" name="address[street]" value="<%= (store.address && store.address.street) || '' %>" />
+      <label>City</label>
+      <input type="text" name="address[city]" value="<%= (store.address && store.address.city) || '' %>" />
+      <label>State</label>
+      <input type="text" name="address[state]" value="<%= (store.address && store.address.state) || '' %>" />
+      <label>Pincode</label>
+      <input type="text" name="address[pincode]" value="<%= (store.address && store.address.pincode) || '' %>" />
+    </fieldset>
+    <label>GSTIN</label>
+    <input type="text" name="gstin" value="<%= (store.verificationDocuments && store.verificationDocuments.gstin) || '' %>" />
+    <label>FSSAI License</label>
+    <input type="text" name="fssaiLicense" value="<%= (store.verificationDocuments && store.verificationDocuments.fssaiLicense) || '' %>" />
+    <button type="submit">Save</button>
+  </form>
+  <form method="post" action="/stores/<%= store._id %>?_method=DELETE" style="margin-top:12px">
+    <button type="submit" onclick="return confirm('Delete this store?')">Delete Store</button>
+  </form>
+  </main>
+</body>
+</html>
+
+
